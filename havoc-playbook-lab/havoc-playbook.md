@@ -7,6 +7,10 @@ Once the campaign is in place, attack operations are conducted through playbooks
 A ./HAVOC campaign can also be accessed in a more manual fashion via the ./HAVOC CLI, which provides the ability to create, view, interact with, and delete ./HAVOC resources.
 
 
+## Prerequisites
+
+For this lab, you'll need two "victim" Windows workstations in your AWS account. One victim machine will run the C2 implant and connect back to the PowerShell Empire container's C2 listener and the other victim machine will be a recon target. You can refer to these [intructions](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html) for creating the Windows EC2 instances but use the t3.medium instance type instead of the recommended t2.micro as stated in the guide (note that you can specify the number of instances to create as "2" in the upper right-hand corner of the Launch an instance page so that you don't have to go through the launch an instance process twice).
+
 ## Connect Multiple Terminals to Your Campaign Manager
 
 Executing playbooks in ./HAVOC is done via configurable playbooks on your Campaign Manager.  A ./HAVOC campaign comes with several pre-built playbooks that allow you to emulate attacker TTPs in a target environment. To maximize the value of emulating attacker TTPs, ./HAVOC playbooks should be executed in a manner that is consistent with a real-world attack kill chain.  Additionally, ./HAVOC playbooks can be dependent on other playbooks; for example, the recon, lateral movement and exfil playbooks are depenedent on the **c2_and_http_server** playbook.
@@ -19,7 +23,7 @@ The recommended order for executing ./HAVOC playbooks to emulate attack behavior
 - **pse_network_recon**
 - **simple_exfil**
 
-Generally, these playbooks would be executed against a target environment with a full Active Directory Domain and accompanying infrastructure. For the purposes of this lab, we will need at least two Windows workstations to use as "victim" machines and it will be expected that the information retrieved from the pse_network_recon playbook will be sparse.
+Generally, these playbooks would be executed against a target environment with a full Active Directory Domain and accompanying infrastructure. For the purposes of this lab, you'll only be using two Windows workstations as "victim" machines without an Active Directory Domain so it is expected that the information retrieved from the pse_network_recon playbook will be sparse.
 
 In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**, complete the following steps.
 
@@ -100,7 +104,7 @@ In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**,
 
 ##  Establishing Initial C2
 
-The **c2_and_http_server** playbook will create a containerized Powershell Empire task, C2 listener, and C2 implant (also called a stager or launcher) in your ./HAVOC campaign deployment. For this lab, we recommend that you setup two "victim" Windows workstations in your AWS account. One victim machine will run the C2 implant and connect back to the PowerShell Empire container's C2 listener and the other victim machine will be a recon target. You can refer to these [intructions](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html) for creating the Windows EC2 instances but use the t3.medium instance type instead of the recommended t2.micro as stated in the guide (note that you can specify the number of instances to create as "2" in the upper right-hand corner of the Launch an instance page so that you don't have to go through the launch an instance process twice). The **c2_and_http_server** playbook will provide an oppportunity to establish which IPs and ports the C2 listener will be accessible from (more details on this below).  This playbook must remain running for the duration other playbooks run, as they will be run through this C2 connection.
+The **c2_and_http_server** playbook will create a containerized Powershell Empire task, C2 listener, and C2 implant (also called a stager or launcher) in your ./HAVOC campaign deployment. The **c2_and_http_server** playbook will provide an oppportunity to establish which IPs and ports the C2 listener will be accessible from (more details on this below).  This playbook must remain running for the duration other playbooks run, as they will be run through this C2 connection.
 
 > **Note:**
 > The **c2_and_http_server** playbook consumes resources in your AWS account so make sure to enter Ctrl-C in the terminal window for the **c2_and_http_server** playbook to initiate the teardown of resources after you have finished executing the other playbooks.
@@ -135,7 +139,7 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 
 5.  For the **client_ip** parameter in the **c2_client** section, specify the following:
 
-    - **client_ip parameter** - This should be the egress (public) IP of your victim workstation. You can obtain the public IP address for your victim workstation from the AWS EC2 web console or, you can obtain its IP address by connecting to the system via RDP and browsing to [https://ifconfig.io](https://ifconfig.io).
+    - **client_ip parameter** - This should be the egress (public) IP of the victim workstation where you plan to run the C2 stager/launcher (aka launcher.ps1). You can obtain the public IP address for your victim workstation from the AWS EC2 web console or, you can obtain its IP address by connecting to the system via RDP and browsing to [https://ifconfig.io](https://ifconfig.io).
     <br>
 
     > **Note:**
@@ -182,10 +186,10 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 
 ###  Initiate C2 from your victim machine
 
-This step could be accomplished by an attacker in a number of ways.  For lab and testing purposes, we're going to download the C2 launcher directly and run it, but in the real world, the attacker may embed it into a Macro, leveraging phishing or social engineering methods, or any number of other ways to convince a user to run the C2 launcher. It is also expected that a sophisticated threat actor will find ways to bypass/evade the local anti-virus/EDR on the victim machine. See the note below for more details.
+This step could be accomplished by an attacker in a number of ways.  For lab and testing purposes, we're going to download the C2 stager/launcher directly and run it, but in the real world, the attacker may embed it into a Macro, leveraging phishing or social engineering methods, or any number of other ways to convince a user to run the C2 stager/launcher. It is also expected that a sophisticated threat actor will find ways to bypass/evade the local anti-virus/EDR on the victim machine. See the note below for more details.
 
 > **Note:**
-> PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 launcher to execute. You can find instructions for disabling Windows Defender here: [Turn off Defender antivirus protection in Windows Security](https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960)
+> PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 stager/launcher to execute. You can find instructions for disabling Windows Defender here: [Turn off Defender antivirus protection in Windows Security](https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960)
 
 1.  Use an RDP client to connect to your victim Windows machine.
 
