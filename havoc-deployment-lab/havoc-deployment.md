@@ -15,7 +15,7 @@ The prerequisites for a ./HAVOC campaign are as follows:
 -   **A Linux or Mac OS "Campaign Manager"** - Will manage the ./HAVOC campaign and act as the playbook operator. This can be a VM, an EC2 instance or your laptop but it must be a *nix type OS. For simplicity sake, this guide assumes your are using an Intel based Ubuntu VM or EC2 instance for your **Campaign Manager**. If you're using something else, you'll need to adapt the package install instructions accordingly. You can refer to the following AWS documentation if you would like to deploy an Ubuntu EC2 instance to use as your **Campaign Manager** (select Ubuntu instead of Amazon Linux as stated in the guide): [Tutorial: Get started with Amazon EC2 Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
 
 <div class="alert alert-info">
-    <strong>Note:</strong> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+    <strong>Note:</strong> If you use an EC2 instance as your <b>Campaign Manager</b>, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: <a href="http://tmuxcheatsheet.com/">Tmux Cheat Sheet & Quick Reference</a>
 </div>
 
 ##  ./HAVOC Campaign Deployment
@@ -69,7 +69,7 @@ The prerequisites for a ./HAVOC campaign are as follows:
 You will need to install the ./HAVOC campaign prerequisites on your **Campaign Manager** as outlined below. These prerequistes are also documented in the [./HAVOC documentation](https://havoc.readme.io/docs/installation#prerequisites).
 
 <div class="alert alert-info">
-    <strong>Reminder:</strong> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+    <strong>Reminder:</strong> If you use an EC2 instance as your <b>Campaign Manager</b>, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: <a href="http://tmuxcheatsheet.com/">Tmux Cheat Sheet & Quick Reference</a>
 </div>
 
 #### Install OS pre-requisites

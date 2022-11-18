@@ -24,7 +24,7 @@ Generally, these playbooks would be executed against a target environment with a
 In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**, complete the following steps.
 
 <div class="alert alert-info">
-    <strong>Reminder:</strong> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+    <strong>Reminder:</strong> If you use an EC2 instance as your <b>Campaign Manager</b>, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: <a href="http://tmuxcheatsheet.com/">Tmux Cheat Sheet & Quick Reference</a>
 </div>
 
 
@@ -85,7 +85,7 @@ In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**,
     Shows information about files that have been shared between container tasks.
 
     <div class="alert alert-info">
-        <strong>Note:</strong> The commands above will return without any tasks, portgroups or files because you haven’t created any yet. We’ll come back to these commands later.
+    <strong>Note:</strong> The commands above will return without any tasks, portgroups or files because you haven’t created any yet. We’ll come back to these commands later.
     </div>
 
 3.  Note that you also have a **help** command available that provides a list of all commands and details about each individual command:
@@ -131,8 +131,8 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
     <br>
 
     <div class="alert alert-info">
-        <strong>Note:</strong> The <b>listener_profile</b> parameter provides the ability to specify a malleable C2 profile if the <b>listener_type</b> parameter is set to <b>http_malleable</b>. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
-        To date, the "trevor" profile has been effective at evading signature-based detections from Intrusion Prevention Systems.
+    <strong>Note:</strong> The <b>listener_profile</b> parameter provides the ability to specify a malleable C2 profile if the <b>listener_type</b> parameter is set to <b>http_malleable</b>. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
+    To date, the "trevor" profile has been effective at evading signature-based detections from Intrusion Prevention Systems.
     </div>
 
 
@@ -149,13 +149,13 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
     <br>
 
     <div class="alert alert-info">
-        <strong>Note:</strong> One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The <b>c2_and_http_server</b> playbook uses the <b>client_ip</b> parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The <b>client_ip</b> parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
+    <strong>Note:</strong> One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The <b>c2_and_http_server</b> playbook uses the <b>client_ip</b> parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The <b>client_ip</b> parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
     </div>
 
     ![c2_client](./images/c2_client.png)
 
     <div class="alert alert-info">
-        <strong>Note:</strong> At this point, the playbook configuration will attempt to install any necessary Python dependencies needed by the playbook and then drop back to the shell prompt. You may see several messages indicating “Requirement already satisfied.” These messages can be safely ignored.
+    <strong>Note:</strong> At this point, the playbook configuration will attempt to install any necessary Python dependencies needed by the playbook and then drop back to the shell prompt. You may see several messages indicating “Requirement already satisfied.” These messages can be safely ignored.
     </div>
 
 6. Now the c2_and_http_server playbook can be executed using the following command:
@@ -197,7 +197,7 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 This step could be accomplished by an attacker in a number of ways.  For lab and testing purposes, we're going to download the C2 launcher directly and run it, but in the real world, the attacker may embed it into a Macro, leveraging phishing or social engineering methods, or any number of other ways to convince a user to run the C2 launcher. It is also expected that a sophisticated threat actor will find ways to bypass/evade the local anti-virus/EDR on the victim machine. See the note below for more details.
 
 <div class="alert alert-info">
-    <strong>Note:</strong> PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 launcher to execute. You can find instructions for disabling Windows Defender here: [Turn off Defender antivirus protection in Windows Security](https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960)
+    <strong>Note:</strong> PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 launcher to execute. You can find instructions for disabling Windows Defender here: <a href="https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960">Turn off Defender antivirus protection in Windows Security</a>
 </div>
 
 1.  Use an RDP client to connect to your victim Windows machine.
@@ -227,7 +227,7 @@ This step could be accomplished by an attacker in a number of ways.  For lab and
     ![Powershell Script](./images/powershell_script.png)
     
     <div class="alert alert-info">
-        <strong>Note:</strong> When the script executes, it will not return a PowerShell prompt. This is expected behavior.
+    <strong>Note:</strong> When the script executes, it will not return a PowerShell prompt. This is expected behavior.
     </div>
 
 6.  Now go back to the **Terminal 2** window on your Ubuntu VM. When the C2 agent connects, you will see output from the **c2_and_http_server** playbook that looks like this:
@@ -313,7 +313,7 @@ The following parameters must be set in the **pse_network_recon** playbook (all 
     ```
 
     <div class="alert alert-info">
-    <strong>Note:</strong> This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./havoc C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting <b>Ctrl-C</b> to end playbook execution.
+    <strong>Note:</strong> This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./HAVOC C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting <b>Ctrl-C</b> to end playbook execution.
     </div>
 
 
@@ -346,7 +346,7 @@ The following parameters must be set in the **simple_exfil** playbook (all other
     ```
     
     <div class="alert alert-info">
-        <strong>Note:</strong> The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
+    <strong>Note:</strong> The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
     </div>
 
 
@@ -405,7 +405,7 @@ The following parameters must be set in the activity_report playbook:
     ```
 
     <div class="alert alert-info">
-        <strong>Note:</strong> The campaign removal will fail if there are any existing tasks, portgroups or files still present in your deployment. If your **c2_and_http_server** playbook did not terminate cleanly, you can manually remove any remaining ./HAVOC resources by following the instructions in the **Manual Cleanup** section below. Make sure to remove any orphaned resources  prior to running the campaign removal command.
+    <strong>Note:</strong> The campaign removal will fail if there are any existing tasks, portgroups or files still present in your deployment. If your <b>c2_and_http_server</b> playbook did not terminate cleanly, you can manually remove any remaining ./HAVOC resources by following the instructions in the <b>Manual Cleanup</b> section below. Make sure to remove any orphaned resources  prior to running the campaign removal command.
     </div>
 
 
