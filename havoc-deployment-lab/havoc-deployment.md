@@ -60,17 +60,15 @@ The prerequisites for a ./HAVOC campaign are as follows:
 
 9.  Click **Next: Review** > **Create user**
 
-    {% note %}
-    **Note:** When user creation is complete, make sure to download the .CSV file that contains the access key and secret key for your havoc-deploy user.
-    {% endnote %}
+    > **Note:**
+    > When user creation is complete, make sure to download the .CSV file that contains the access key and secret key for your havoc-deploy user.
 
 ###  Stage the ./HAVOC Campaign Manager (Playbook Operator Machine)
 
 You will need to install the ./HAVOC campaign prerequisites on your **Campaign Manager** as outlined below. These prerequistes are also documented in the [./HAVOC documentation](https://havoc.readme.io/docs/installation#prerequisites).
 
-{% note %}
-**Reminder:** If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
-{% endnote %}
+> **Note:**
+> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
 
 #### Install OS pre-requisites
 
@@ -110,9 +108,8 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 
 ####  Install Terraform
 
-{% note %}
-**Note:** Terraform 1.1.6 is specified below which must be used.  Do not use the current version.
-{% endnote %}
+> **Note:**
+> Terraform 1.1.6 is specified below which must be used.  Do not use the current version.
 
 
 1.  Download the package (if you're not sure, use the x86 version)
@@ -191,9 +188,9 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **Enable custom domain name? (Y/N)** - N
     <br>
     <br>
-    {% note %}
-    **Note:** The deployment process will take several minutes.
-    {% endnote %}
+
+    > **Note:**
+    > The deployment process will take several minutes.
 
 4.  Once the resources are deployed, you will be prompted for a few more inputs that will be used to configure the local ./HAVOC environment on your campaign manager machine. Provide the following inputs to the prompts:
 
@@ -201,9 +198,9 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **Output format (table|json) [table]** - json
     <br>
     <br>
-    {% note %}
-    **Note:** After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.
-    {% endnote %}
+    
+    > **Note:**
+    > After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.
 
 5.  Copy the campaign deployment details and store them somewhere safe just in case you need them again later. The campaign deployment details will look like similar to this.
 

@@ -23,10 +23,8 @@ Generally, these playbooks would be executed against a target environment with a
 
 In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**, complete the following steps.
 
-{% note %}
-**Reminder:** If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
-{% endnote %}
-
+> **Note:**
+> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
 
 1.  Open three terminal windows and SSH to your **Campaign Manager** to be used as follows:
 
@@ -84,9 +82,8 @@ In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**,
 
     Shows information about files that have been shared between container tasks.
 
-    {% note %}
-    **Note:** The commands above will return without any tasks, portgroups or files because you haven’t created any yet. We’ll come back to these commands later.
-    {% endnote %}
+    > **Note:**
+    > The commands above will return without any tasks, portgroups or files because you haven’t created any yet. We’ll come back to these commands later.
 
 3.  Note that you also have a **help** command available that provides a list of all commands and details about each individual command:
 
@@ -107,9 +104,8 @@ In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**,
 
 The **c2_and_http_server** playbook will create a containerized Powershell Empire task, C2 listener, and C2 implant (also called a stager or launcher) in your ./HAVOC campaign deployment. For this lab, we recommend that you setup two "victim" Windows workstations in your AWS account. One victim machine will run the C2 implant and connect back to the PowerShell Empire container's C2 listener and the other victim machine will be a recon target. You can refer to these [intructions](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html) for creating the Windows EC2 instances but use the t3.medium instance type instead of the recommended t2.micro as stated in the guide (note that you can specify the number of instances to create as "2" in the upper right-hand corner of the Launch an instance page so that you don't have to go through the launch an instance process twice). The **c2_and_http_server** playbook will provide an oppportunity to establish which IPs and ports the C2 listener will be accessible from (more details on this below).  This playbook must remain running for the duration other playbooks run, as they will be run through this C2 connection.
 
-{% note %}
-**Note:** The **c2_and_http_server** playbook consumes resources in your AWS account so make sure to enter Ctrl-C in the terminal window for the **c2_and_http_server** playbook to initiate the teardown of resources after you have finished executing the other playbooks.
-{% endnote %}
+> **Note:**
+> The **c2_and_http_server** playbook consumes resources in your AWS account so make sure to enter Ctrl-C in the terminal window for the **c2_and_http_server** playbook to initiate the teardown of resources after you have finished executing the other playbooks.
 
 ###  Run c2_and_http_server Playbook
 
@@ -130,11 +126,9 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
     <br>
     <br>
 
-    {% note %}
-    **Note:** The **listener_profile** parameter provides the ability to specify a malleable C2 profile if the **listener_type** parameter is set to **http_malleable**. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
+    > **Note:**
+    > The **listener_profile** parameter provides the ability to specify a malleable C2 profile if the **listener_type** parameter is set to **http_malleable**. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
     To date, the "trevor" profile has been effective at evading signature-based detections from Intrusion Prevention Systems.
-    {% endnote %}
-
 
     ![c2_listener](./images/c2_listener.png)
 
@@ -148,15 +142,13 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
     <br>
     <br>
 
-    {% note %}
-    **Note:** One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The **c2_and_http_server** playbook uses the **client_ip** parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The **client_ip** parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
-    {% endnote %}
+    > **Note:**
+    > One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The **c2_and_http_server** playbook uses the **client_ip** parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The **client_ip** parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
 
     ![c2_client](./images/c2_client.png)
 
-    {% note %}
-    **Note:** At this point, the playbook configuration will attempt to install any necessary Python dependencies needed by the playbook and then drop back to the shell prompt. You may see several messages indicating “Requirement already satisfied.” These messages can be safely ignored.
-    {% endnote %}
+    > **Note:**
+    > At this point, the playbook configuration will attempt to install any necessary Python dependencies needed by the playbook and then drop back to the shell prompt. You may see several messages indicating “Requirement already satisfied.” These messages can be safely ignored.
 
 6. Now the c2_and_http_server playbook can be executed using the following command:
 
@@ -196,9 +188,8 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 
 This step could be accomplished by an attacker in a number of ways.  For lab and testing purposes, we're going to download the C2 launcher directly and run it, but in the real world, the attacker may embed it into a Macro, leveraging phishing or social engineering methods, or any number of other ways to convince a user to run the C2 launcher. It is also expected that a sophisticated threat actor will find ways to bypass/evade the local anti-virus/EDR on the victim machine. See the note below for more details.
 
-{% note %}
-**Note:** PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 launcher to execute. You can find instructions for disabling Windows Defender here: [Turn off Defender antivirus protection in Windows Security](https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960)
-{% endnote %}
+> **Note:**
+> PowerShell Empire (the C2 framework used by ./HAVOC in this playbook) is a well-known C2 framework that will trigger anti-virus/EDR protections. Evading anti-virus/EDR is out of the scope of this lab so, you will need to disable Windows Defender on your victim Windows machine in order for the C2 launcher to execute. You can find instructions for disabling Windows Defender here: [Turn off Defender antivirus protection in Windows Security](https://support.microsoft.com/en-us/windows/turn-off-defender-antivirus-protection-in-windows-security-99e6004f-c54c-8509-773c-a4d776b77960)
 
 1.  Use an RDP client to connect to your victim Windows machine.
 
@@ -226,9 +217,8 @@ This step could be accomplished by an attacker in a number of ways.  For lab and
     
     ![Powershell Script](./images/powershell_script.png)
     
-    {% note %}
-    **Note:** When the script executes, it will not return a PowerShell prompt. This is expected behavior.
-    {% endnote %}
+    > **Note:**
+    > When the script executes, it will not return a PowerShell prompt. This is expected behavior.
 
 6.  Now go back to the **Terminal 2** window on your Ubuntu VM. When the C2 agent connects, you will see output from the **c2_and_http_server** playbook that looks like this:
 
@@ -240,9 +230,8 @@ This step could be accomplished by an attacker in a number of ways.  For lab and
 
 The recon and exfil playbooks must be executed one playbook at a time. You can execute them in any order, but they cannot run simultaneously because the C2 task can only operate on one command at a time.
 
-{% note %}
-**Note:** Running two playbooks at once will lead to command collisions.
-{% endnote %}
+> **Note:**
+> Running two playbooks at once will lead to command collisions.
 
 The **pse_*_recon** playbooks are setup to require minimal configuration. There are many configurable parameters available in these playbooks, but for the most part, the default settings can be accepted.
 
@@ -274,9 +263,8 @@ The following parameters must be set in the **pse_host_recon playbook** (all oth
     ```
     ./havoc -e pse_host_recon
     ```
-{% note %}
-**Note:** This playbook runs through several steps in Powershell Empire, and may take several minutes to complete.
-{% endnote %}
+> **Note:**
+> This playbook runs through several steps in Powershell Empire, and may take several minutes to complete.
 
 
 ###  Run pse_network_recon Playbook
@@ -312,9 +300,8 @@ The following parameters must be set in the **pse_network_recon** playbook (all 
     ./havoc -e pse_network_recon
     ```
 
-    {% note %}
-    **Note:** This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./HAVOC C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting **Ctrl-C** to end playbook execution.
-    {% endnote %}
+    > **Note:**
+    > This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./HAVOC C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting **Ctrl-C** to end playbook execution.
 
 
 ## Perform Simple Exfiltration
@@ -345,9 +332,8 @@ The following parameters must be set in the **simple_exfil** playbook (all other
     ./havoc -e simple_exfil
     ```
     
-    {% note %}
-    **Note:** The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
-    {% endnote %}
+    > **Note:**
+    > The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
 
 
 ## Gathering Final Report Data
@@ -363,9 +349,8 @@ The following parameters must be set in the activity_report playbook:
     <br>
     <br>
     
-{% note %}
-**Note:** The values for **tasks** above can be grabbed from **Terminal 1** by using the **list_tasks** command.
-{% endnote %}
+> **Note:**
+> The values for **tasks** above can be grabbed from **Terminal 1** by using the **list_tasks** command.
 
 1.  In **Terminal 3**, configure the **activity_report** playbook:
 
