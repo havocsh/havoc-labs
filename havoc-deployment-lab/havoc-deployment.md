@@ -14,9 +14,9 @@ The prerequisites for a ./HAVOC campaign are as follows:
 -   **AWS Account** - Will also need a user that has full admin privileges (required).
 -   **A Linux or Mac OS "Campaign Manager"** - Will manage the ./HAVOC campaign and act as the playbook operator. This can be a VM, an EC2 instance or your laptop but it must be a *nix type OS. For simplicity sake, this guide assumes your are using an Intel based Ubuntu VM or EC2 instance for your **Campaign Manager**. If you're using something else, you'll need to adapt the package install instructions accordingly. You can refer to the following AWS documentation if you would like to deploy an Ubuntu EC2 instance to use as your **Campaign Manager** (select Ubuntu instead of Amazon Linux as stated in the guide): [Tutorial: Get started with Amazon EC2 Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
 
-<div class="alert alert-info">
-    <strong>Note:</strong> If you use an EC2 instance as your <b>Campaign Manager</b>, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: <a href="http://tmuxcheatsheet.com/">Tmux Cheat Sheet & Quick Reference</a>
-</div>
+{% note %}
+**Note:** If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+{% endnote %}
 
 ##  ./HAVOC Campaign Deployment
 
@@ -60,17 +60,17 @@ The prerequisites for a ./HAVOC campaign are as follows:
 
 9.  Click **Next: Review** > **Create user**
 
-    <div class="alert alert-info">
-    	<strong>Note:</strong> When user creation is complete, make sure to download the .CSV file that contains the access key and secret key for your havoc-deploy user.
-    </div>
+    {% note %}
+    **Note:** When user creation is complete, make sure to download the .CSV file that contains the access key and secret key for your havoc-deploy user.
+    {% endnote %}
 
 ###  Stage the ./HAVOC Campaign Manager (Playbook Operator Machine)
 
 You will need to install the ./HAVOC campaign prerequisites on your **Campaign Manager** as outlined below. These prerequistes are also documented in the [./HAVOC documentation](https://havoc.readme.io/docs/installation#prerequisites).
 
-<div class="alert alert-info">
-    <strong>Reminder:</strong> If you use an EC2 instance as your <b>Campaign Manager</b>, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: <a href="http://tmuxcheatsheet.com/">Tmux Cheat Sheet & Quick Reference</a>
-</div>
+{% note %}
+**Reminder:** If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+{% endnote %}
 
 #### Install OS pre-requisites
 
@@ -110,9 +110,9 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 
 ####  Install Terraform
 
-<div class="alert alert-info">
-    <strong>Note:</strong> Terraform 1.1.6 is specified below which must be used.  Do not use the current version.
-</div>
+{% note %}
+**Note:** Terraform 1.1.6 is specified below which must be used.  Do not use the current version.
+{% endnote %}
 
 
 1.  Download the package (if you're not sure, use the x86 version)
@@ -191,9 +191,9 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **Enable custom domain name? (Y/N)** - N
     <br>
     <br>
-    <div class="alert alert-info">
-        <strong>Note:</strong> The deployment process will take several minutes.
-    </div>
+    {% note %}
+    **Note:** The deployment process will take several minutes.
+    {% endnote %}
 
 4.  Once the resources are deployed, you will be prompted for a few more inputs that will be used to configure the local ./HAVOC environment on your campaign manager machine. Provide the following inputs to the prompts:
 
@@ -201,9 +201,9 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **Output format (table|json) [table]** - json
     <br>
     <br>
-    <div class="alert alert-info">
-        <strong>Note:</strong> After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.
-    </div>
+    {% note %}
+    **Note:** After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.
+    {% endnote %}
 
 5.  Copy the campaign deployment details and store them somewhere safe just in case you need them again later. The campaign deployment details will look like similar to this.
 
