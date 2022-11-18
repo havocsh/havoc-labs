@@ -55,8 +55,6 @@ The prerequisites for a ./HAVOC campaign are as follows:
 8.  Fill in the following values, and click **Next: Tags**: 
     
     -   **Administrators** - Checked
-    <br>
-    <br>
 
 9.  Click **Next: Review** > **Create user**
 
@@ -186,8 +184,6 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **./HAVOC campaign administrator email** - *your_email_address*
     - **Task results queue expiration** - 30
     - **Enable custom domain name? (Y/N)** - N
-    <br>
-    <br>
 
     > **Note:**
     > The deployment process will take several minutes.
@@ -196,8 +192,6 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 
     - **./HAVOC credential profile name [default]** - (press enter to accept **default**)
     - **Output format (table|json) [table]** - json
-    <br>
-    <br>
     
     > **Note:**
     > After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.

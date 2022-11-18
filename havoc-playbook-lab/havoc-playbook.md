@@ -31,8 +31,6 @@ In order to prepare for playbook execution on your ./HAVOC **Campaign Manager**,
     - **Terminal 1** - ./HAVOC CLI
     - **Terminal 2** - **c2_and_http_server** playbook
     - **Terminal 3** - **pse_host_recon**, **pse_network_recon**, **simple_exfil playbooks**
-    <br>
-    <br>
 
 2.  In **Terminal 1** setup a tmux session with the name **CLI**:
 
@@ -123,8 +121,6 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 3.  For the **c2_listener** parameters, accept all the defaults except the following:
     
     - **listener_profile** - trevor
-    <br>
-    <br>
 
     > **Note:**
     > The **listener_profile** parameter provides the ability to specify a malleable C2 profile if the **listener_type** parameter is set to **http_malleable**. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
@@ -139,8 +135,6 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 5.  For the **client_ip** parameter in the **c2_client** section, specify the following:
 
     - **client_ip parameter** - This should be the egress (public) IP of your victim workstation. You can obtain the public IP address for your victim workstation from the AWS EC2 web console or, you can obtain its IP address by connecting to the system via RDP and browsing to [https://ifconfig.io](https://ifconfig.io).
-    <br>
-    <br>
 
     > **Note:**
     > One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The **c2_and_http_server** playbook uses the **client_ip** parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The **client_ip** parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
@@ -346,8 +340,6 @@ The following parameters must be set in the activity_report playbook:
     - **tasks** - This should be a **comma separated** list of task names associated with the activity to be retrieved.
     - **start_time** - Provide a start time timestamp that references a time prior to when you began running playbooks, e.g. **11/19/2022 00:00:00**.
     - **end_time** - Provide an end time timestamp that references a time after you finished running playbooks, e.g. **11/19/2022 23:59:59**.
-    <br>
-    <br>
     
 > **Note:**
 > The values for **tasks** above can be grabbed from **Terminal 1** by using the **list_tasks** command.
