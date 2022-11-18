@@ -137,7 +137,7 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 
     - **client_ip parameter** - This should be the egress (public) IP of your victim workstation. You can obtain the public IP address for your victim workstation from the AWS EC2 web console or, you can obtain its IP address by connecting to the system via RDP and browsing to [https://ifconfig.io](https://ifconfig.io).
     <br>
-    
+
     > **Note:**
     > One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The **c2_and_http_server** playbook uses the **client_ip** parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The **client_ip** parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
 
@@ -296,8 +296,8 @@ The following parameters must be set in the **pse_network_recon** playbook (all 
     ./havoc -e pse_network_recon
     ```
 
-    > **Note:**
-    > This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./HAVOC C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting **Ctrl-C** to end playbook execution.
+> **Note:**
+> This playbook may appear to get "stuck." Port scans run from a C2 connection like the one established through Powershell Empire with the ./HAVOC C2 module can take a while to complete.  If no results are returned, wait 10-15 minutes before hitting **Ctrl-C** to end playbook execution.
 
 
 ## Perform Simple Exfiltration
@@ -311,7 +311,11 @@ The following parameters must be set in the **simple_exfil** playbook (all other
 - **[c2_task]**
     - **task_name** - This should be set to the name of the C2 server task that your active agent is connected to.
     - **agent_name** - This should be the unique name associated with your active C2 agent.
+    <br>
 
+    > **Note:**
+    > The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
+    
 1.  In **Terminal 3**, configure the **simple_exfil** playbook:
 
     ```
@@ -327,9 +331,6 @@ The following parameters must be set in the **simple_exfil** playbook (all other
     ```
     ./havoc -e simple_exfil
     ```
-    
-    > **Note:**
-    > The exfil_size parameter should not exceed 1000 (1GB). This is a current size limitation that will be addressed in a future ./HAVOC release.
 
 
 ## Gathering Final Report Data
