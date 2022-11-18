@@ -49,7 +49,7 @@ The prerequisites for a ./HAVOC campaign are as follows:
 
     - **User name** - havoc-deploy
     - **Access key - Programmatic access** - Checked
-    
+
     ![Set User Details](./images/set_user_details.png)
 
 8.  Fill in the following values, and click **Next: Tags**: 
@@ -82,7 +82,7 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 
 ####  Install AWS CLI
 
-1.  Download the Package
+1.  Download the Package (if you're not sure, use the x86 version)
 
     x86 Version
 
@@ -115,7 +115,7 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 </div>
 
 
-1.  Download the package
+1.  Download the package (if you're not sure, use the x86 version)
 
     x86 Version
 
