@@ -404,9 +404,9 @@ The following parameters must be set in the activity_report playbook:
     ./havoc -r aws
     ```
 
-    {% note %}
-    **Note:** The campaign removal will fail if there are any existing tasks, portgroups or files still present in your deployment. If your **c2_and_http_server** playbook did not terminate cleanly, you can manually remove any remaining ./HAVOC resources by following the instructions in the **Manual Cleanup** section below. Make sure to remove any orphaned resources  prior to running the campaign removal command.
-    {% endnote %}
+    > **Note:** 
+    > The campaign removal will fail if there are any existing tasks, portgroups or files still present in your deployment. If your **c2_and_http_server** playbook did not terminate cleanly, you can manually remove any remaining ./HAVOC resources by following the instructions in the **Manual Cleanup** section below. Make sure to remove any orphaned resources  prior to running the campaign removal command.
+    
 
 
 ## Manual Cleanup
@@ -451,6 +451,7 @@ In **Terminal 1**, perform the following steps to make sure that all orphaned re
 
 Once all of the orphaned resources have been removed, you can proceed with the campaign removal. Exit the ./HAVOC CLI in **Terminal 1** by typing **exit** and execute the campaign removal command:
 
-    ```
-    ./havoc -r aws
-    ```
+```
+./havoc -r aws
+```
+
