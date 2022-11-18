@@ -38,11 +38,8 @@ The prerequisites for a ./HAVOC campaign are as follows:
         - **User group name** - Administrators
     - **Attach permissions policies - Optional**
         - **AdministratorAccess** - Checked
-    <br>
-    <br>
+
     ![AdministratorAccess](./images/AdministratorAccess.png)
-    <br>
-    <br>
 
 5.  In the AWS Management Console navigate to the **IAM** > **User** page.
 
@@ -52,8 +49,7 @@ The prerequisites for a ./HAVOC campaign are as follows:
 
     - **User name** - havoc-deploy
     - **Access key - Programmatic access** - Checked
-    <br>
-    <br>
+    
     ![Set User Details](./images/set_user_details.png)
 
 8.  Fill in the following values, and click **Next: Tags**: 
@@ -75,6 +71,8 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 <div class="alert alert-info">
     <strong>Reminder:</strong> If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a <b>tmux</b> session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a <b>tmux</b> cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
 </div>
+
+#### Install OS pre-requisites
 
 1.  Install Common Packages
 
