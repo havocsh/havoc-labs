@@ -184,7 +184,7 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
     - **./HAVOC campaign administrator email** - *your_email_address*
     - **Task results queue expiration** - 30
     - **Enable custom domain name? (Y/N)** - N
-
+    <br>
     > **Note:**
     > The deployment process will take several minutes.
 
@@ -192,7 +192,7 @@ You will need to install the ./HAVOC campaign prerequisites on your **Campaign M
 
     - **./HAVOC credential profile name [default]** - (press enter to accept **default**)
     - **Output format (table|json) [table]** - json
-    
+    <br>
     > **Note:**
     > After responding to the prompts above, the local environment will be setup and your campaign deployment details will be provided.
 

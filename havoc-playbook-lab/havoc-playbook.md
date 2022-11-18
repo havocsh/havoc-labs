@@ -121,7 +121,7 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 3.  For the **c2_listener** parameters, accept all the defaults except the following:
     
     - **listener_profile** - trevor
-
+    <br>
     > **Note:**
     > The **listener_profile** parameter provides the ability to specify a malleable C2 profile if the **listener_type** parameter is set to **http_malleable**. Malleable C2 profiles allow the C2 server to adjust the communications between the C2 agent and listener for evasion purposes.
     To date, the "trevor" profile has been effective at evading signature-based detections from Intrusion Prevention Systems.
@@ -135,12 +135,12 @@ The **c2_and_http_server** playbook will create a containerized Powershell Empir
 5.  For the **client_ip** parameter in the **c2_client** section, specify the following:
 
     - **client_ip parameter** - This should be the egress (public) IP of your victim workstation. You can obtain the public IP address for your victim workstation from the AWS EC2 web console or, you can obtain its IP address by connecting to the system via RDP and browsing to [https://ifconfig.io](https://ifconfig.io).
-
+    <br>
     > **Note:**
     > One of the many benefits the ./HAVOC platform provides is the ability to run production attacker infrastructure in a secure manner. For instance, the C2 server associated with this playbook is running in AWS with a public IP address and it’s helpful to restrict access to the C2 listener to only the clients you intend to have connecting to it. Your ./HAVOC campaign can deploy portgroups that restrict access to ./HAVOC resources for exactly that purpose. The **c2_and_http_server** playbook uses the **client_ip** parameter to determine which IP addresses to allow to communicate with the C2 listener and HTTP server. The **client_ip** parameter can accept a single IP address, or a comma separated list of multiple IP addresses but they all have to be entered in CIDR notation.
 
     ![c2_client](./images/c2_client.png)
-
+    
     > **Note:**
     > At this point, the playbook configuration will attempt to install any necessary Python dependencies needed by the playbook and then drop back to the shell prompt. You may see several messages indicating “Requirement already satisfied.” These messages can be safely ignored.
 
