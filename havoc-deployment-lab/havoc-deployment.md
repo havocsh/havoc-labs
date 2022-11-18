@@ -15,7 +15,9 @@ The prerequisites for a ./HAVOC campaign are as follows:
 -   **A Linux or Mac OS "Campaign Manager"** - Will manage the ./HAVOC campaign and act as the playbook operator. This can be a VM, an EC2 instance or your laptop but it must be a *nix type OS. For simplicity sake, this guide assumes your are using an Intel based Ubuntu VM or EC2 instance for your **Campaign Manager**. If you're using something else, you'll need to adapt the package install instructions accordingly. You can refer to the following AWS documentation if you would like to deploy an Ubuntu EC2 instance to use as your **Campaign Manager** (select Ubuntu instead of Amazon Linux as stated in the guide): [Tutorial: Get started with Amazon EC2 Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
 
 {% note %}
+
 **Note:** If you use an EC2 instance as your **Campaign Manager**, make sure to perform all of your ./HAVOC deployment and playbook operation tasks through a **tmux** session or you'll run the risk of having an incomplete deployment or orphaned resources as a result of being disconnected from your SSH session (SSH sessions to EC2 instances get disconnected frequently). You can find a **tmux** cheat sheet here: [Tmux Cheat Sheet & Quick Reference](http://tmuxcheatsheet.com/)
+
 {% endnote %}
 
 ##  ./HAVOC Campaign Deployment
