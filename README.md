@@ -26,4 +26,4 @@ Custom playbooks developed by ./HAVOC Labs
 - Variables:
   - c2_task_name - The name of the C2 task that the agent is connected to.
   - agent_name - The auto-generated name associated with the C2 agent that the playbook will be sending instructions to.
-  - lateral_movement_computer_name - The host name or IP address of a system to be used.
+  - lateral_movement_computer_name - The host name or IP address of a system to be used for targeted reconnaissance and lateral movement actions.
