@@ -6,15 +6,15 @@ Custom playbooks developed by ./HAVOC Labs
 
 - Setup:
   - Create the playbook using the create_playbook_type command:
-    - create_playbook_type --playbook_type=conti_simple --playbook_version=1.0.1 --playbook_template=<path_to_conti_simple.template_file>
+    `create_playbook_type --playbook_type=conti_simple --playbook_version=1.0.1 --playbook_template=<path_to_conti_simple.template_file>`
   - Upload the request_spn_tickets.ps1 file to the ./HAVOC workspace:
-    - create_file --file_name=request_spn_tickets.ps1 --path=shared/ --local_path=<path_to_local_request_spn_tickets.ps1_file>
+    `create_file --file_name=request_spn_tickets.ps1 --path=shared/ --local_path=<path_to_local_request_spn_tickets.ps1_file>`
   - Instruct your C2 task to download the request_spn_tickets.ps1 file from the shared workspace:
-    - interact_with_task --task_name=<c2_task_name> --instruct_command=download_from_workspace --instruct_args={'file_name': 'request_spn_tickets.ps1'}
+    `interact_with_task --task_name=<c2_task_name> --instruct_command=download_from_workspace --instruct_args={'file_name': 'request_spn_tickets.ps1'}`
   - Establish a C2 connection from a host inside of the subject environment.
 
 - Execution:
-  - run_playbook --playbook_name=<playbook_name> --playbook_type=conti_simple --playbook_timeout=0 --playbook_config={'variable': {'c2_task_name': '<c2_task_name>', 'lateral_movement_computer_name': '<lateral_movement_computer_name>', 'agent_name': '<agent_name>'}}
+  `run_playbook --playbook_name=<playbook_name> --playbook_type=conti_simple --playbook_timeout=0 --playbook_config={'variable': {'c2_task_name': '<c2_task_name>', 'lateral_movement_computer_name': '<lateral_movement_computer_name>', 'agent_name': '<agent_name>'}}`
 
 - Variables:
   - c2_task_name - The name of the C2 task that the agent is connected to.
