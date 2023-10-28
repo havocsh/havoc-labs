@@ -1,4 +1,4 @@
-#Conti Simple Playbook
+# Conti Simple Playbook
 
 - Description: This playbook uses an existing C2 session to control a host inside of the subject environment. The playbook will instruct the host to perform several local host and domain-based reconnaissance tasks, simulate a kerberoasting attack by using an LDAP query to discover SPNs and then request tickets for the SPNs (the actual tickets retrieved are not exposed during playbook operation), and simulate lateral movement via a WMI call to another host within the subject environment. The WMI call does not execute a C2 implant on the target host. Instead, it uses the WMI call to generate a file using the fsutil utility that the playbook then uses to simulate a data staging and exfiltration operation. The playbook attempts to cleanup all artifacts (including terminating the C2 agent) prior to exiting.
 
