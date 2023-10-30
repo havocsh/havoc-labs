@@ -1,4 +1,4 @@
-# Conti Ransomware Simple Playbook
+# Post Compromise Playbook
 
 variable "exfil_file" {
     description = "File name to use for the exfil file."
