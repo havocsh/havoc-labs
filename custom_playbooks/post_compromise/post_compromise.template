@@ -228,7 +228,7 @@ action "agent_action" "request_spn_tickets" {
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
     command    = "execute_empire_agent_module"
-    depends_on = action.agent_action.get_dfs_share
+    depends_on = action.agent_action.get_domain_controller
 
     execute_empire_agent_module = {
         module            = "powershell/management/invoke_script"
